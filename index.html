@@ -15,6 +15,7 @@
         .form-group label { font-weight: 600; margin-bottom: 0.5rem; color: #555; }
         .form-group input[type="month"],
         .form-group input[type="number"],
+        .form-group input[type="text"],
         .form-group select,
         .form-group textarea {
             width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem;
@@ -26,10 +27,20 @@
             grid-template-columns: repeat(3, 1fr); 
             gap: 1.5rem; 
         }
+        
+        /* 優化：讓特定項目橫跨所有欄位 */
+        .form-group-span-3 {
+            grid-column: 1 / -1;
+        }
+
         /* 在較窄的螢幕上(例如手機)，改為單欄 */
         @media (max-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr;
+            }
+            /* 在手機上，span-3的設定不需要 */
+            .form-group-span-3 {
+                grid-column: auto;
             }
         }
 
@@ -61,6 +72,10 @@
                     <div class="form-group">
                         <label for="report_month">統計月份<span class="required">*</span></label>
                         <input type="month" id="report_month" name="report_month" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reporter_name">填報人<span class="required">*</span></label>
+                        <input type="text" id="reporter_name" name="reporter_name" required>
                     </div>
                 </div>
             </fieldset>
@@ -96,8 +111,12 @@
                     <div class="form-group"><label for="staff_leave">教職員離職</label><input type="number" id="staff_leave" name="staff_leave" min="0"></div>
                     <div class="form-group"><label for="payment_count">代收款-筆數</label><input type="number" id="payment_count" name="payment_count" min="0"></div>
                     <div class="form-group"><label for="payment_amount">代收款-金額</label><input type="number" id="payment_amount" name="payment_amount" min="0"></div>
+                
+                    <div class="form-group form-group-span-3">
+                        <label for="notes_circulation">流通業務-記事</label>
+                        <textarea id="notes_circulation" name="notes_circulation"></textarea>
+                    </div>
                 </div>
-                <div class="form-group"><label for="notes_circulation">流通業務-記事</label><textarea id="notes_circulation" name="notes_circulation"></textarea></div>
             </fieldset>
 
             <fieldset>
@@ -113,8 +132,12 @@
                     <div class="form-group"><label for="meeting_room_usage">會議室借用次數</label><input type="number" id="meeting_room_usage" name="meeting_room_usage" min="0"></div>
                     <div class="form-group"><label for="seat_7f_usage">城區7F劃位</label><input type="number" id="seat_7f_usage" name="seat_7f_usage" min="0"></div>
                     <div class="form-group"><label for="maintenance_count">館舍維修次數</label><input type="number" id="maintenance_count" name="maintenance_count" min="0"></div>
+                    
+                    <div class="form-group form-group-span-3">
+                        <label for="notes_space">閱覽室與空間-記事</label>
+                        <textarea id="notes_space" name="notes_space"></textarea>
+                    </div>
                 </div>
-                <div class="form-group"><label for="notes_space">閱覽室與空間-記事</label><textarea id="notes_space" name="notes_space"></textarea></div>
             </fieldset>
 
             <fieldset>
@@ -122,8 +145,12 @@
                 <div class="form-grid">
                     <div class="form-group"><label for="tour_count">導覽場次</label><input type="number" id="tour_count" name="tour_count" min="0"></div>
                     <div class="form-group"><label for="tour_people">導覽人次</label><input type="number" id="tour_people" name="tour_people" min="0"></div>
+                    
+                    <div class="form-group form-group-span-3">
+                        <label for="notes_promotion">推廣活動-記事</label>
+                        <textarea id="notes_promotion" name="notes_promotion"></textarea>
+                    </div>
                 </div>
-                <div class="form-group"><label for="notes_promotion">推廣活動-記事</label><textarea id="notes_promotion" name="notes_promotion"></textarea></div>
             </fieldset>
 
             <fieldset>
@@ -133,8 +160,12 @@
                     <div class="form-group"><label for="periodical_binding">期刊裝訂(冊)</label><input type="number" id="periodical_binding" name="periodical_binding" min="0"></div>
                     <div class="form-group"><label for="periodical_checkin">期刊點收(件)</label><input type="number" id="periodical_checkin" name="periodical_checkin" min="0"></div>
                     <div class="form-group"><label for="ill_request">館合申請件處理</label><input type="number" id="ill_request" name="ill_request" min="0"></div>
+                    
+                    <div class="form-group form-group-span-3">
+                        <label for="notes_reference">參考及期刊-記事</label>
+                        <textarea id="notes_reference" name="notes_reference"></textarea>
+                    </div>
                 </div>
-                <div class="form-group"><label for="notes_reference">參考及期刊-記事</label><textarea id="notes_reference" name="notes_reference"></textarea></div>
             </fieldset>
 
             <fieldset>
@@ -142,8 +173,12 @@
                 <div class="form-grid">
                     <div class="form-group"><label for="weeding">淘汰處理(冊/件)</label><input type="number" id="weeding" name="weeding" min="0"></div>
                     <div class="form-group"><label for="book_repair">圖書修護、裝訂(冊)</label><input type="number" id="book_repair" name="book_repair" min="0"></div>
+                    
+                    <div class="form-group form-group-span-3">
+                        <label for="notes_other">其他-記事</label>
+                        <textarea id="notes_other" name="notes_other"></textarea>
+                    </div>
                 </div>
-                <div class="form-group"><label for="notes_other">其他-記事</label><textarea id="notes_other" name="notes_other"></textarea></div>
             </fieldset>
 
             <button type="submit" class="submit-btn">提交月報表</button>
