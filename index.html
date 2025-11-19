@@ -5,61 +5,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>圖書館讀者服務業務月報表</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; margin: 0; padding: 2rem; background-color: #f9f9f9; }
-        .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
-        h1 { text-align: center; color: #333; margin-bottom: 1.5rem; }
-        form { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
-        fieldset { border: 1px solid #ddd; border-radius: 8px; padding: 1.5rem; margin: 0; }
-        legend { font-size: 1.5rem; font-weight: bold; color: #0056b3; padding: 0 0.5rem; margin-left: 1rem; }
-        .form-group { display: flex; flex-direction: column; }
-        .form-group label { font-weight: 600; margin-bottom: 0.5rem; color: #555; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        .hint {
+            text-align: center;
+            color: #777;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 0;
+        }
+        legend {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0056b3;
+            padding: 0 0.5rem;
+            margin-left: 1rem;
+        }
+        .fieldset-hint {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 0.75rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+        .unit {
+            font-weight: 400;
+            color: #999;
+            margin-left: 0.25rem;
+            font-size: 0.9rem;
+        }
         .form-group input[type="month"],
         .form-group input[type="number"],
         .form-group input[type="text"],
         .form-group select,
         .form-group textarea {
-            width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem;
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
         }
-        
-        /* 版面修正：強制三欄式佈局 */
-        .form-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 1.5rem; 
+
+        /* 三欄式佈局 */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
         }
-        
-        /* 優化：讓特定項目橫跨所有欄位 */
+
+        /* 橫跨整列 */
         .form-group-span-3 {
             grid-column: 1 / -1;
         }
 
-        /* 在較窄的螢幕上(例如手機)，改為單欄 */
         @media (max-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr;
             }
-            /* 在手機上，span-3的設定不需要 */
             .form-group-span-3 {
                 grid-column: auto;
             }
         }
 
-        textarea { min-height: 100px; resize: vertical; }
-        .submit-btn {
-            background-color: #007bff; color: white; padding: 1rem; border: none; border-radius: 6px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;
+        textarea {
+            min-height: 100px;
+            resize: vertical;
         }
-        .submit-btn:hover { background-color: #0056b3; }
-        .required { color: #d9534f; margin-left: 4px; }
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        .required {
+            color: #d9534f;
+            margin-left: 4px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>圖書館讀者服務業務月報表</h1>
-        
-        <form action="https://sculib.app.n8n.cloud/webhook/monthly-report" method="POST">
-        
+        <div class="hint">說明：數值欄位若無資料請填「0」，文字說明請填在各區塊的「記事」。</div>
+
+        <form action="https://sculib.app.n8n.cloud/webhook-test/monthly-report" method="POST">
+
+            <!-- 基本資訊 -->
             <fieldset>
                 <legend>基本資訊</legend>
+                <div class="fieldset-hint">請先選擇館別、統計月份與填報人，這三項為必填。</div>
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="library_branch">填報館別<span class="required">*</span></label>
@@ -75,108 +154,272 @@
                     </div>
                     <div class="form-group">
                         <label for="reporter_name">填報人<span class="required">*</span></label>
-                        <input type="text" id="reporter_name" name="reporter_name" required>
+                        <input type="text" id="reporter_name" name="reporter_name" required placeholder="請輸入姓名">
                     </div>
                 </div>
             </fieldset>
 
+            <!-- A. 流通服務 -->
             <fieldset>
                 <legend>A. 流通服務</legend>
+                <div class="fieldset-hint">所有數值欄位皆為「當月實際量」，無則填 0。</div>
                 <div class="form-grid">
-                    <div class="form-group"><label for="self_service_users">自助借書機-人數</label><input type="number" id="self_service_users" name="self_service_users" min="0"></div>
-                    <div class="form-group"><label for="self_service_uses">自助借書機-人次</label><input type="number" id="self_service_uses" name="self_service_uses" min="0"></div>
-                    <div class="form-group"><label for="self_service_items">自助借書機-冊次</label><input type="number" id="self_service_items" name="self_service_items" min="0"></div>
-                    <div class="form-group"><label for="pickup_locker_users">預約取書櫃-人數</label><input type="number" id="pickup_locker_users" name="pickup_locker_users" min="0"></div>
-                    <div class="form-group"><label for="pickup_locker_uses">預約取書櫃-人次</label><input type="number" id="pickup_locker_uses" name="pickup_locker_uses" min="0"></div>
-                    <div class="form-group"><label for="pickup_locker_items">預約取書櫃-冊次</label><input type="number" id="pickup_locker_items" name="pickup_locker_items" min="0"></div>
-                    <div class="form-group"><label for="acq_books_ch">新收中文書(冊)</label><input type="number" id="acq_books_ch" name="acq_books_ch" min="0"></div>
-                    <div class="form-group"><label for="acq_books_en">新收西文書(冊)</label><input type="number" id="acq_books_en" name="acq_books_en" min="0"></div>
-                    <div class="form-group"><label for="acq_nonbook">新收非書資料(件)</label><input type="number" id="acq_nonbook" name="acq_nonbook" min="0"></div>
-                    <div class="form-group"><label for="card_issued">證件核發</label><input type="number" id="card_issued" name="card_issued" min="0"></div>
-                    <div class="form-group"><label for="ill_out_book">總館調借分館-圖書</label><input type="number" id="ill_out_book" name="ill_out_book" min="0"></div>
-                    <div class="form-group"><label for="ill_out_media">總館調借分館-非書</label><input type="number" id="ill_out_media" name="ill_out_media" min="0"></div>
-                    <div class="form-group"><label for="ill_in_book">分館調借總館-圖書</label><input type="number" id="ill_in_book" name="ill_in_book" min="0"></div>
-                    <div class="form-group"><label for="ill_in_media">分館調借總館-非書</label><input type="number" id="ill_in_media" name="ill_in_media" min="0"></div>
-                    <div class="form-group"><label for="long_term_loan_book">長期借閱(設定冊數) - 圖書</label><input type="number" id="long_term_loan_book" name="long_term_loan_book" min="0"></div>
-                    <div class="form-group"><label for="long_term_loan_media">長期借閱(設定冊數) - 非書</label><input type="number" id="long_term_loan_media" name="long_term_loan_media" min="0"></div>
-                    <div class="form-group"><label for="course_reserve_book">指定用書(使用冊次) - 圖書</label><input type="number" id="course_reserve_book" name="course_reserve_book" min="0"></div>
-                    <div class="form-group"><label for="course_reserve_media">指定用書(使用冊次) - 非書</label><input type="number" id="course_reserve_media" name="course_reserve_media" min="0"></div>
-                    <div class="form-group"><label for="thesis_received">紙本論文收件</label><input type="number" id="thesis_received" name="thesis_received" min="0"></div>
-                    
-                    <div class="form-group"><label for="thesis_approval_electronic">學位論文-電子審核</label><input type="number" id="thesis_approval_electronic" name="thesis_approval_electronic" min="0"></div>
-                    
-                    <div class="form-group"><label for="lost_book_count">賠書(冊)</label><input type="number" id="lost_book_count" name="lost_book_count" min="0"></div>
-                    <div class="form-group"><label for="lost_book_fee">賠款(元)</label><input type="number" id="lost_book_fee" name="lost_book_fee" min="0"></div>
-                    <div class="form-group"><label for="student_leave">學生離校(休退畢)</label><input type="number" id="student_leave" name="student_leave" min="0"></div>
-                    <div class="form-group"><label for="staff_leave">教職員離職</label><input type="number" id="staff_leave" name="staff_leave" min="0"></div>
-                    <div class="form-group"><label for="payment_count">代收款-筆數</label><input type="number" id="payment_count" name="payment_count" min="0"></div>
-                    <div class="form-group"><label for="payment_amount">代收款-金額</label><input type="number" id="payment_amount" name="payment_amount" min="0"></div>
-                
+                    <!-- 自助借書機 -->
+                    <div class="form-group">
+                        <label for="self_service_users">自助借書機-人數<span class="unit">人</span></label>
+                        <input type="number" id="self_service_users" name="self_service_users" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="self_service_uses">自助借書機-人次<span class="unit">人次</span></label>
+                        <input type="number" id="self_service_uses" name="self_service_uses" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="self_service_items">自助借書機-冊次<span class="unit">冊</span></label>
+                        <input type="number" id="self_service_items" name="self_service_items" min="0" step="1" placeholder="0">
+                    </div>
+
+                    <!-- 預約取書櫃 -->
+                    <div class="form-group">
+                        <label for="pickup_locker_users">預約取書櫃-人數<span class="unit">人</span></label>
+                        <input type="number" id="pickup_locker_users" name="pickup_locker_users" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="pickup_locker_uses">預約取書櫃-人次<span class="unit">人次</span></label>
+                        <input type="number" id="pickup_locker_uses" name="pickup_locker_uses" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="pickup_locker_items">預約取書櫃-冊次<span class="unit">冊</span></label>
+                        <input type="number" id="pickup_locker_items" name="pickup_locker_items" min="0" step="1" placeholder="0">
+                    </div>
+
+                    <!-- 新收館藏 -->
+                    <div class="form-group">
+                        <label for="acq_books_ch">新收中文書(冊)</label>
+                        <input type="number" id="acq_books_ch" name="acq_books_ch" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="acq_books_en">新收西文書(冊)</label>
+                        <input type="number" id="acq_books_en" name="acq_books_en" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="acq_nonbook">新收非書資料(件)</label>
+                        <input type="number" id="acq_nonbook" name="acq_nonbook" min="0" step="1" placeholder="0">
+                    </div>
+
+                    <!-- 證件與館際合作 -->
+                    <div class="form-group">
+                        <label for="card_issued">證件核發<span class="unit">張</span></label>
+                        <input type="number" id="card_issued" name="card_issued" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="ill_out_book">總館調借分館-圖書<span class="unit">冊</span></label>
+                        <input type="number" id="ill_out_book" name="ill_out_book" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="ill_out_media">總館調借分館-非書<span class="unit">件</span></label>
+                        <input type="number" id="ill_out_media" name="ill_out_media" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="ill_in_book">分館調借總館-圖書<span class="unit">冊</span></label>
+                        <input type="number" id="ill_in_book" name="ill_in_book" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="ill_in_media">分館調借總館-非書<span class="unit">件</span></label>
+                        <input type="number" id="ill_in_media" name="ill_in_media" min="0" step="1" placeholder="0">
+                    </div>
+
+                    <!-- 長期借閱 / 指定用書 -->
+                    <div class="form-group">
+                        <label for="long_term_loan_book">長期借閱(設定冊數) - 圖書<span class="unit">冊</span></label>
+                        <input type="number" id="long_term_loan_book" name="long_term_loan_book" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="long_term_loan_media">長期借閱(設定冊數) - 非書<span class="unit">件</span></label>
+                        <input type="number" id="long_term_loan_media" name="long_term_loan_media" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="course_reserve_book">指定用書(使用冊次) - 圖書<span class="unit">冊次</span></label>
+                        <input type="number" id="course_reserve_book" name="course_reserve_book" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="course_reserve_media">指定用書(使用冊次) - 非書<span class="unit">件次</span></label>
+                        <input type="number" id="course_reserve_media" name="course_reserve_media" min="0" step="1" placeholder="0">
+                    </div>
+
+                    <!-- 學位論文／賠書 -->
+                    <div class="form-group">
+                        <label for="thesis_received">紙本論文收件<span class="unit">件</span></label>
+                        <input type="number" id="thesis_received" name="thesis_received" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="thesis_approval_electronic">學位論文-電子審核<span class="unit">件</span></label>
+                        <input type="number" id="thesis_approval_electronic" name="thesis_approval_electronic" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="lost_book_count">賠書(冊)</label>
+                        <input type="number" id="lost_book_count" name="lost_book_count" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="lost_book_fee">賠款(元)<span class="unit">元</span></label>
+                        <input type="number" id="lost_book_fee" name="lost_book_fee" min="0" step="1" placeholder="0">
+                    </div>
+
+                    <!-- 離校／離職 -->
+                    <div class="form-group">
+                        <label for="student_leave">學生離校(休退畢)<span class="unit">人</span></label>
+                        <input type="number" id="student_leave" name="student_leave" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="staff_leave">教職員離職<span class="unit">人</span></label>
+                        <input type="number" id="staff_leave" name="staff_leave" min="0" step="1" placeholder="0">
+                    </div>
+
+                    <!-- 代收款／保證金 -->
+                    <div class="form-group">
+                        <label for="payment_count">代收款-筆數<span class="unit">筆</span></label>
+                        <input type="number" id="payment_count" name="payment_count" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="payment_amount">代收款-金額<span class="unit">元</span></label>
+                        <input type="number" id="payment_amount" name="payment_amount" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="deposit_count">保證金-筆數<span class="unit">筆</span></label>
+                        <input type="number" id="deposit_count" name="deposit_count" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="deposit_amount">保證金-金額<span class="unit">元</span></label>
+                        <input type="number" id="deposit_amount" name="deposit_amount" min="0" step="1" placeholder="0">
+                    </div>
+
+                    <!-- 流通記事 -->
                     <div class="form-group form-group-span-3">
                         <label for="notes_circulation">流通業務-記事</label>
-                        <textarea id="notes_circulation" name="notes_circulation"></textarea>
+                        <textarea id="notes_circulation" name="notes_circulation" placeholder="可說明特殊案例、異常數字原因等"></textarea>
                     </div>
                 </div>
             </fieldset>
 
+            <!-- B. 閱覽室與空間 -->
             <fieldset>
                 <legend>B. 閱覽室與空間</legend>
+                <div class="fieldset-hint">請填寫當月各閱覽空間實際使用人次與維修情形。</div>
                 <div class="form-grid">
-                    <div class="form-group"><label for="gate_in_campus">圖書館進館人次(本校)</label><input type="number" id="gate_in_campus" name="gate_in_campus" min="0"></div>
-                    <div class="form-group"><label for="gate_in_external">圖書館進館人次(校外)</label><input type="number" id="gate_in_external" name="gate_in_external" min="0"></div>
-                    <div class="form-group"><label for="room1_usage">第一閱覽室使用人次</label><input type="number" id="room1_usage" name="room1_usage" min="0"></div>
-                    <div class="form-group"><label for="room2_usage">第二閱覽室使用人次</label><input type="number" id="room2_usage" name="room2_usage" min="0"></div>
-                    <div class="form-group"><label for="study_room_usage">研究小間使用人次</label><input type="number" id="study_room_usage" name="study_room_usage" min="0"></div>
-                    <div class="form-group"><label for="seminar_room_usage">研討室使用人次</label><input type="number" id="seminar_room_usage" name="seminar_room_usage" min="0"></div>
-                    <div class="form-group"><label for="media_room_usage">團映室使用人次</label><input type="number" id="media_room_usage" name="media_room_usage" min="0"></div>
-                    <div class="form-group"><label for="meeting_room_usage">會議室借用次數</label><input type="number" id="meeting_room_usage" name="meeting_room_usage" min="0"></div>
-                    <div class="form-group"><label for="seat_7f_usage">城區7F劃位</label><input type="number" id="seat_7f_usage" name="seat_7f_usage" min="0"></div>
-                    <div class="form-group"><label for="maintenance_count">館舍維修次數</label><input type="number" id="maintenance_count" name="maintenance_count" min="0"></div>
-                    
+                    <div class="form-group">
+                        <label for="gate_in_campus">圖書館進館人次(本校)</label>
+                        <input type="number" id="gate_in_campus" name="gate_in_campus" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="gate_in_external">圖書館進館人次(校外)</label>
+                        <input type="number" id="gate_in_external" name="gate_in_external" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="room1_usage">第一閱覽室使用人次</label>
+                        <input type="number" id="room1_usage" name="room1_usage" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="room2_usage">第二閱覽室使用人次</label>
+                        <input type="number" id="room2_usage" name="room2_usage" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="study_room_usage">研究小間使用人次</label>
+                        <input type="number" id="study_room_usage" name="study_room_usage" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="seminar_room_usage">研討室使用人次</label>
+                        <input type="number" id="seminar_room_usage" name="seminar_room_usage" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="media_room_usage">團映室使用人次</label>
+                        <input type="number" id="media_room_usage" name="media_room_usage" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="meeting_room_usage">會議室借用次數</label>
+                        <input type="number" id="meeting_room_usage" name="meeting_room_usage" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="seat_7f_usage">城區7F劃位</label>
+                        <input type="number" id="seat_7f_usage" name="seat_7f_usage" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="maintenance_count">館舍維修次數</label>
+                        <input type="number" id="maintenance_count" name="maintenance_count" min="0" step="1" placeholder="0">
+                    </div>
+
                     <div class="form-group form-group-span-3">
                         <label for="notes_space">閱覽室與空間-記事</label>
-                        <textarea id="notes_space" name="notes_space"></textarea>
+                        <textarea id="notes_space" name="notes_space" placeholder="例如設備維修內容、空間調整說明等"></textarea>
                     </div>
                 </div>
             </fieldset>
 
+            <!-- C. 推廣活動 -->
             <fieldset>
                 <legend>C. 推廣活動</legend>
+                <div class="fieldset-hint">填寫導覽與推廣活動的場次與人次。</div>
                 <div class="form-grid">
-                    <div class="form-group"><label for="tour_count">導覽場次</label><input type="number" id="tour_count" name="tour_count" min="0"></div>
-                    <div class="form-group"><label for="tour_people">導覽人次</label><input type="number" id="tour_people" name="tour_people" min="0"></div>
-                    
+                    <div class="form-group">
+                        <label for="tour_count">導覽場次<span class="unit">場</span></label>
+                        <input type="number" id="tour_count" name="tour_count" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="tour_people">導覽人次<span class="unit">人次</span></label>
+                        <input type="number" id="tour_people" name="tour_people" min="0" step="1" placeholder="0">
+                    </div>
+
                     <div class="form-group form-group-span-3">
                         <label for="notes_promotion">推廣活動-記事</label>
-                        <textarea id="notes_promotion" name="notes_promotion"></textarea>
+                        <textarea id="notes_promotion" name="notes_promotion" placeholder="可記錄重要活動名稱、合作單位等"></textarea>
                     </div>
                 </div>
             </fieldset>
 
+            <!-- D. 參考及期刊 -->
             <fieldset>
                 <legend>D. 參考及期刊</legend>
+                <div class="fieldset-hint">請填寫參考櫃檯、期刊作業及館合申請情形。</div>
                 <div class="form-grid">
-                    <div class="form-group"><label for="ref_desk_uses">參考諮詢(人次)</label><input type="number" id="ref_desk_uses" name="ref_desk_uses" min="0"></div>
-                    <div class="form-group"><label for="periodical_binding">期刊裝訂(冊)</label><input type="number" id="periodical_binding" name="periodical_binding" min="0"></div>
-                    <div class="form-group"><label for="periodical_checkin">期刊點收(件)</label><input type="number" id="periodical_checkin" name="periodical_checkin" min="0"></div>
-                    <div class="form-group"><label for="ill_request">館合申請件處理</label><input type="number" id="ill_request" name="ill_request" min="0"></div>
-                    
+                    <div class="form-group">
+                        <label for="ref_desk_uses">參考諮詢(人次)</label>
+                        <input type="number" id="ref_desk_uses" name="ref_desk_uses" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="periodical_binding">期刊裝訂(冊)</label>
+                        <input type="number" id="periodical_binding" name="periodical_binding" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="periodical_checkin">期刊點收(件)</label>
+                        <input type="number" id="periodical_checkin" name="periodical_checkin" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="ill_request">館合申請件處理</label>
+                        <input type="number" id="ill_request" name="ill_request" min="0" step="1" placeholder="0">
+                    </div>
+
                     <div class="form-group form-group-span-3">
                         <label for="notes_reference">參考及期刊-記事</label>
-                        <textarea id="notes_reference" name="notes_reference"></textarea>
+                        <textarea id="notes_reference" name="notes_reference" placeholder="例如常見問題、異常件處理說明等"></textarea>
                     </div>
                 </div>
             </fieldset>
 
+            <!-- E. 其他項目 -->
             <fieldset>
                 <legend>E. 其他項目</legend>
+                <div class="fieldset-hint">填寫淘汰、修護及其他需要記錄的事項。</div>
                 <div class="form-grid">
-                    <div class="form-group"><label for="weeding">淘汰處理(冊/件)</label><input type="number" id="weeding" name="weeding" min="0"></div>
-                    <div class="form-group"><label for="book_repair">圖書修護、裝訂(冊)</label><input type="number" id="book_repair" name="book_repair" min="0"></div>
-                    
+                    <div class="form-group">
+                        <label for="weeding">淘汰處理(冊/件)</label>
+                        <input type="number" id="weeding" name="weeding" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="book_repair">圖書修護、裝訂(冊)</label>
+                        <input type="number" id="book_repair" name="book_repair" min="0" step="1" placeholder="0">
+                    </div>
+
                     <div class="form-group form-group-span-3">
                         <label for="notes_other">其他-記事</label>
-                        <textarea id="notes_other" name="notes_other"></textarea>
+                        <textarea id="notes_other" name="notes_other" placeholder="可補充本月其他重要工作事項"></textarea>
                     </div>
                 </div>
             </fieldset>
